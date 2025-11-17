@@ -1,5 +1,18 @@
 # knnpack
 
+<!-- Build / GitHub / Tests -->
+[![GitHub Repo](https://img.shields.io/badge/github-knnpack-black?logo=github)](https://github.com/NamanDhariwal/knnpack)
+![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
+![R CMD Check](https://img.shields.io/badge/R%20CMD%20check-passing-brightgreen)
+
+<!-- Vignette badge -->
+![Vignette](https://img.shields.io/badge/vignette-getting--started-blue)
+
+<!-- License -->
+![License](https://img.shields.io/badge/license-MIT-green)
+
+---
+
 `knnpack` is a lightweight R package that implements
 **k-Nearest Neighbors (KNN)** for classification and regression, with optional
 Rcpp distance acceleration. Built for educational purposes.
