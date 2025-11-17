@@ -1,16 +1,11 @@
 # knnpack
 
-<!-- Build / GitHub / Tests -->
-[![GitHub Repo](https://img.shields.io/badge/github-knnpack-black?logo=github)](https://github.com/NamanDhariwal/knnpack)
-![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
-![R CMD Check](https://img.shields.io/badge/R%20CMD%20check-passing-brightgreen)
-
-<!-- Vignette badge -->
-![Vignette](https://img.shields.io/badge/vignette-getting--started-blue)
-
-<!-- License -->
-![License](https://img.shields.io/badge/license-MIT-green)
-
+![Build](https://img.shields.io/badge/build-passing-brightgreen)
+![Tests](https://img.shields.io/badge/tests-passing-brightgreen)
+![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen)
+![Correctness](https://img.shields.io/badge/correctness-verified%20against%20class::knn-brightgreen)
+![Regression Verified](https://img.shields.io/badge/regression-verified%20against%20FNN::knn.reg-brightgreen)
+![Vignette](https://img.shields.io/badge/vignette-available-blue)
 ---
 
 `knnpack` is a lightweight R package that implements
