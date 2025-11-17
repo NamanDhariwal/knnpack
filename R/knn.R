@@ -1,19 +1,3 @@
-#' Fit a KNN model
-#'
-#' @param x Numeric matrix/data.frame of training features (n x p).
-#' @param y Vector of outcomes. Factor/character for classification, numeric for regression.
-#' @param task One of "classification" or "regression". If missing, inferred from y type.
-#' @param standardize Logical; if TRUE, z-standardize columns.
-#'
-#' @return An object of class "knnpack_model".
-#' @examples
-#' set.seed(1)
-#' x <- matrix(rnorm(100*3), 100, 3)
-#' y <- factor(sample(c("A","B"), 100, TRUE))
-#' m <- knn_fit(x, y, task = "classification")
-#' pred <- knn_predict(m, x, k = 3)
-#' mean(pred == y)
-#' @export
 knn_fit <- function(x, y, task = c("classification","regression"), standardize = TRUE) {
   ch <- .check_train(x, y)
   x <- ch$x; y <- ch$y
