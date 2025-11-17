@@ -18,7 +18,7 @@ Rcpp distance acceleration. Built for educational purposes.
 
 ```r
 # install.packages("devtools")
-devtools::install_github("YOUR_GITHUB_USERNAME/knnpack")
+devtools::install_github("NamanDhariwal/knnpack")
 ```
 
 ---
