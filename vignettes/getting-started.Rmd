@@ -1,19 +1,135 @@
 ---
-title: "getting-started"
+title: "Getting Started with knnpack"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{getting-started}
+  %\VignetteIndexEntry{Getting Started With knnpack}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+library(knnpack)
+set.seed(1)
+```
+
+# Introduction
+
+The **knnpack** package implements a simple yet complete
+k-Nearest Neighbors (KNN) classifier and regressor in R, with optional
+Rcpp-accelerated distance computations.
+
+This vignette demonstrates:
+
+- How to fit a KNN model (`knn_fit`)
+- How to make predictions (`knn_predict`)
+- How to evaluate performance (`knn_score`)
+- Correctness compared to `class::knn` & `FNN::knn.reg`
+- Efficiency benchmarking (`bench::mark`)
+
+---
+
+# Classification Example (Iris Data)
+
+```{r}
+x <- as.matrix(iris[, 1:4])
+y <- iris$Species
+
+set.seed(123)
+idx <- sample(nrow(x), 100)
+xtr <- x[idx, ]
+ytr <- y[idx]
+xte <- x[-idx, ]
+yte <- y[-idx]
+
+m <- knn_fit(xtr, ytr, task = "classification")
+pred <- knn_predict(m, xte, k = 5)
+
+mean(pred == yte)
+```
+
+## Correctness Check vs `class::knn`
+
+```{r}
+library(class)
+
+pred_ref <- class::knn(train = xtr, test = xte, cl = ytr, k = 5)
+
+all.equal(as.character(pred), as.character(pred_ref))
+mean(pred_ref == yte)
+```
+
+## Efficiency Comparison
+
+```{r}
+library(bench)
+
+bench::mark(
+  knnpack = { knn_predict(m, xte, k = 5, use_rcpp = TRUE) },
+  class_knn = { class::knn(train = xtr, test = xte, cl = ytr, k = 5) },
+  iterations = 20,
+  check = FALSE
 )
 ```
 
-```{r setup}
-library(knnpack)
+---
+
+# Regression Example (mtcars Data)
+
+```{r}
+x_reg <- as.matrix(mtcars[, -1])
+y_reg <- mtcars$mpg
+
+set.seed(99)
+idx <- sample(nrow(x_reg), 20)
+
+mreg <- knn_fit(x_reg[-idx, ], y_reg[-idx], task = "regression")
+pred_reg <- knn_predict(mreg, x_reg[idx, ], k = 3)
+
+sqrt(mean((pred_reg - y_reg[idx])^2))
+```
+
+## Correctness Check vs `FNN::knn.reg`
+
+```{r}
+library(FNN)
+
+pred_ref <- FNN::knn.reg(
+  train = x_reg[-idx, ],
+  test  = x_reg[idx, ],
+  y     = y_reg[-idx],
+  k     = 3
+)$pred
+
+all.equal(as.numeric(pred_reg), as.numeric(pred_ref), tolerance = 1e-6)
+```
+
+## Efficiency Comparison
+
+```{r}
+bench::mark(
+  knnpack = { knn_predict(mreg, x_reg[idx, ], k = 3, use_rcpp = TRUE) },
+  FNN = { FNN::knn.reg(train = x_reg[-idx, ], test = x_reg[idx, ], y = y_reg[-idx], k = 3)$pred },
+  iterations = 30,
+  check = FALSE
+)
+```
+
+---
+
+# Summary
+
+This vignette demonstrated:
+
+- KNN classification & regression
+- Correctness checks (`all.equal`)
+- Efficiency benchmarking
+- Full demonstration of package usage
+
+See documentation:
+
+```r
+?knn_fit
+?knn_predict
+?knn_score
 ```
