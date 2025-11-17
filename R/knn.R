@@ -26,17 +26,6 @@ knn_fit <- function(x, y, task = c("classification","regression"), standardize =
   ), class = "knnpack_model")
 }
 
-#' Predict with a KNN model
-#'
-#' @param model A 'knnpack_model' from knn_fit()
-#' @param newx Numeric matrix/data.frame of new features
-#' @param k Integer K
-#' @param weights "uniform" or "distance"
-#' @param method "auto" or "brute" (currently uses brute-force distances)
-#' @param use_rcpp If TRUE, use Rcpp distance kernel when available
-#'
-#' @return Vector of predictions (class labels or numeric)
-#' @export
 knn_predict <- function(model, newx, k = 5,
                         weights = c("uniform","distance"),
                         method = c("auto","brute"),
@@ -50,13 +39,12 @@ knn_predict <- function(model, newx, k = 5,
 
   newz <- .apply_standardization(newx, model$center, model$scale)
 
-  # distance matrix (n_new x n_train)
   D <- if (use_rcpp) {
     if (!requireNamespace("Rcpp", quietly = TRUE)) {
       use_rcpp <- FALSE
     }
     if (use_rcpp) {
-      euclidean_distance(newz, model$x_train)  # Rcpp function
+      euclidean_distance(newz, model$x_train) 
     } else {
       n_new <- nrow(newz)
       n_tr  <- nrow(model$x_train)
@@ -112,16 +100,6 @@ knn_predict <- function(model, newx, k = 5,
   }
 }
 
-#' Score a KNN model (accuracy or RMSE)
-#'
-#' @param model knnpack_model
-#' @param x Matrix/data.frame of features
-#' @param y True outcomes
-#' @param k Number of neighbors
-#' @param ... Passed to knn_predict
-#'
-#' @return numeric; accuracy for classification, RMSE for regression
-#' @export
 knn_score <- function(model, x, y, k = 5, ...) {
   pred <- knn_predict(model, x, k = k, ...)
   if (model$task == "classification") {
