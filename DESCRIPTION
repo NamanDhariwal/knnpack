@@ -1,11 +1,31 @@
 Package: knnpack
-Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9000
+Type: Package
+Title: A Minimal Yet Fast k-Nearest Neighbors Classifier and Regressor
+Version: 0.1.0
 Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+    person("Naman", "Dhariwal", role = c("aut","cre"),
+           email = "your_email@umich.edu")
+Description: Implements k-Nearest Neighbors (KNN) for classification and regression
+    in pure R with an optional fast path via Rcpp for distance computations.
+    Includes documentation, examples, a vignette, unit tests, and benchmarks
+    against reference implementations (class::knn, FNN::knn, FNN::knn.reg).
+License: MIT + file LICENSE
 Encoding: UTF-8
-Roxygen: list(markdown = TRUE)
+LazyData: true
+Depends: R (>= 4.1.0)
+Imports:
+    stats,
+    Rcpp
+LinkingTo: 
+    Rcpp, RcppArmadillo
+Suggests:
+    testthat (>= 3.0.0),
+    knitr,
+    rmarkdown,
+    bench,
+    class,
+    FNN,
+    covr
+VignetteBuilder: knitr
+Config/testthat/edition: 3
 RoxygenNote: 7.3.3
